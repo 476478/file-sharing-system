@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Sharing System</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h1>Upload a File</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Available Files</h2>
+<ul>
+    {% for f in files %}
+    <li>
+        <span>{{ f.file.name|slice:"8:" }}</span>
+        <span class="timestamp">{{ f.uploaded_at }}</span>
+        <a href="{{ f.file.url }}" download>
+            <button class="download-btn">Download</button>
+        </a>
+    </li>
+    {% empty %}
+    <li>No files yet.</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
